@@ -32,7 +32,7 @@ const updateUser = (request, response) => {
     const { name, character } = request.body
 
     pool.query(
-        'UPDATE users SET name = $1, character = $2 WHERE id = $3',
+        'UPDATE users SET name = $1, character = $2 WHERE id = $3 RETURNING name, character',
         [name, character, id],
         (error, results) => {
             if (error) {
