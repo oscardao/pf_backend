@@ -18,13 +18,12 @@ const getUsers = (request, response) => {
 
 const createUser = (request, response) => {
     const { name, character } = request.body
-    console.log(request.body.name + "  " + request.body.character)
-    pool.query('INSERT INTO users (name, character) VALUES ($1, $2)', [name, character], (error, result) => {
+    console.log("adding user: " + request.body.name + "  " + request.body.character)
+    pool.query('INSERT INTO users (name, character) VALUES ($1, $2) RETURNING id, name, character', [name, character], (error, results) => {
         if (error) {
             throw error
         }
-        console.log(result);
-        response.status(201).send(`User added with ID: ${result.insertId}`)
+        response.status(201).json(results.rows[0]);
     })
 }
 
