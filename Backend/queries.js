@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
     user: 'postgres',
-    host: 'busy_black',
+    host: '192.168.8.104',
     database: 'pocket_friend_db',
     password: 'pocketfriend',
     port: 5234,
@@ -18,11 +18,12 @@ const getUsers = (request, response) => {
 
 const createUser = (request, response) => {
     const { name, character } = request.body
-
-    pool.query('INSERT INTO users (name, character) VALUES ($1, $2)', [name, character], (error, results) => {
+    console.log(request.body.name + "  " + request.body.character)
+    pool.query('INSERT INTO users (name, character) VALUES ($1, $2)', [name, character], (error, result) => {
         if (error) {
             throw error
         }
+        console.log(result);
         response.status(201).send(`User added with ID: ${result.insertId}`)
     })
 }
