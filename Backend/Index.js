@@ -10,6 +10,7 @@ app.get('/users/:id', db.getUserById)
 app.get('/users', db.getUsers)
 app.post('/users', db.createUser)
 app.put('/users/:id', db.updateUser)
+app.get('/users/:id', db.getHub)
 
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`)

@@ -1,5 +1,6 @@
 const WebSocket = require('ws')
 const port = 8080
+const db = require('./queries')
 
 const wsServer = new WebSocket.Server({ port: port }, () => {
     console.log('server started')
@@ -15,14 +16,14 @@ wsServer.on('connection', function (ws, req) {
     connections[params.get('playerID')] = ws;
 
     ws.on('message', (data) => {
-        let parsedMessage = JSON.parse(data);
-        console.log(parsedMessage);
-        if (parsedMessage.toID in connections) {
+        let JSONmessage = JSON.parse(data);
+        console.log(JSONmessage);
+        if (JSONmessage.to_user in connections) {
             console.log("Receiver present, forwarding message to receiver");
-            connections[parsedMessage.toID].send(data);
+            connections[JSONmessage.to_user].send(data);
         } else {
             console.log("Receiver not present, forwarding message to database");
-            //Forward to database
+            db.storeMessage(JSONmessage)
         }
     })
 
