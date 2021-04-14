@@ -1,6 +1,6 @@
 const WebSocket = require('ws')
 const port = 8080
-const db = require('./queries')
+const db = require('./Queries/MessageQueries')
 
 const wsServer = new WebSocket.Server({ port: port }, () => {
     console.log('server started')
