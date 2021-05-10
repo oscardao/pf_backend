@@ -64,4 +64,5 @@ module.exports = {
     storeMessage,
     getMessagesByID,
     removeUserFromHub,
+    addUserToHub,
 }

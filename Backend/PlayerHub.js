@@ -11,13 +11,14 @@ let connections = {}
 wsServer.on('connection', function (ws, req) {
     let queryString = req.url.replace('/', '');
     let params = new URLSearchParams(queryString);
+
     console.log(`Registering connection: playerID=${params.get('playerID')}`);
 
     connections[params.get('playerID')] = ws;
+    MQ.addUserToHub(params.get('playerID'))
 
     ws.on('message', (data) => {
         let JSONmessage = JSON.parse(data);
-        console.log(JSONmessage);
         if (JSONmessage.to_user in connections) {
             console.log("Receiver present, forwarding message to receiver");
             connections[JSONmessage.to_user].send(data);
