@@ -54,8 +54,24 @@ const getUserById = (request, response) => {
 
 const getHub = (request, response) => {
     const id = parseInt(request.params.id)
+    const { partner_id } = request.body
+
+    pool.instance.query('SELECT * FROM hub WHERE id = $1', [id], (error, results) => {
+        if (error) {
+            throw error
+        }
+
+        if (!results.rows.length) {
+            response.status(200).json({})
+        }
+
+        response.status(200).json(results.rows[0])
+    })
 
 }
+
+
+
 
 module.exports = {
     getUserById,

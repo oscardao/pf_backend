@@ -3,8 +3,7 @@ const app = express()
 const port = 8000
 
 const UQ = require('./Queries/UserQueries')
-const MQ = require('./Queries/MessageQueries')
-const PQ = require('./Queries/PartnerQueries')
+const HQ = require('./Queries/HubQueries')
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -12,12 +11,9 @@ app.get('/users/:id', UQ.getUserById)
 app.get('/users', UQ.getUsers)
 app.post('/users', UQ.createUser)
 app.put('/users/:id', UQ.updateUser)
-app.get('/users/:id', UQ.getHub)
+app.get('/users/hub/:id', UQ.getHub)
 
-app.get('/messages/:id', MQ.getMessagesByID)
-
-app.get('/requests/:id', PQ.getRequestsById)
-app.post('/requests/:id', PQ.requestPartner)
+app.get('/messages/:id', HQ.getMessagesByID)
 
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`)

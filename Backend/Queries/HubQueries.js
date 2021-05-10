@@ -1,5 +1,29 @@
 const pool = require('./Pool')
 
+const addUserToHub = (user, hub) => {
+    return new Promise((resolve) => {
+        console.log("Adding User: " + user + "   Hub: " + hub)
+        pool.instance.query('INSERT INTO hub (user, hub) VALUES ($1, $2)', [user, hub], (error, results) => {
+            if (error) {
+                throw error
+            }
+            resolve("Success");
+        })
+    })
+}
+
+const removeUserFromHub = (user) => {
+    return new Promise((resolve) => {
+        console.log("Removing User: " + user)
+        pool.instance.query('DELETE FROM hub WHERE user = $1', [user], (error, results) => {
+            if (error) {
+                throw error
+            }
+            resolve("Success");
+        })
+    })
+}
+
 const getMessagesByID = (request, response) => {
     const id = parseInt(request.params.id)
     pool.instance.query('SELECT * FROM idling_messages WHERE id = $1', [id], (error, results) => {
@@ -39,4 +63,5 @@ const deleteMessages = (id) => {
 module.exports = {
     storeMessage,
     getMessagesByID,
+    removeUserFromHub,
 }

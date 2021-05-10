@@ -1,6 +1,6 @@
 const WebSocket = require('ws')
 const port = 8080
-const db = require('./Queries/MessageQueries')
+const MQ = require('./Queries/HubQueries')
 
 const wsServer = new WebSocket.Server({ port: port }, () => {
     console.log('server started')
@@ -23,11 +23,12 @@ wsServer.on('connection', function (ws, req) {
             connections[JSONmessage.to_user].send(data);
         } else {
             console.log("Receiver not present, forwarding message to database");
-            db.storeMessage(JSONmessage)
+            MQ.storeMessage(JSONmessage)
         }
     })
 
     ws.on('close', () => {
+        MQ.removeUserFromHub(params.get('playerID'))
         delete connections[params.get('playerID')];
         console.log('Connection closed');
     })

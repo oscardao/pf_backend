@@ -48,6 +48,14 @@ const requestPartner = (request, response) => {
 
 const acceptRequest = (request, response) => {
     const id = parseInt(request.params.id)
+    const { from_user } = request.body
+
+    pool.instance.query('DELETE FROM requests WHERE to_user = $1 OR from_user = $2', [id, from_user], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).send("Success")
+    })
 
 }
 
