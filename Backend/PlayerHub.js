@@ -3,7 +3,7 @@ const port = 8080
 const MQ = require('./Queries/HubQueries')
 
 const wsServer = new WebSocket.Server({ port: port }, () => {
-    console.log('server started')
+    console.log('server started, listening on port ' + port)
 })
 
 let connections = {}
