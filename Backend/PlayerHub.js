@@ -18,6 +18,9 @@ wsServer.on('connection', function (ws, req) {
     //MQ.addUserToHub(params.get('playerID'))
 
     ws.on('message', (data) => {
+         var d = new Date();
+         console.log(`${d.getHours()}:${d.getSeconds()}:${d.getMilliseconds()}`);
+
         let JSONmessage = JSON.parse(data);
         if (JSONmessage.from_user in connections) {
             console.log("Receiver present, forwarding message to receiver");
