@@ -15,21 +15,21 @@ wsServer.on('connection', function (ws, req) {
     console.log(`Registering connection: playerID=${params.get('playerID')}`);
 
     connections[params.get('playerID')] = ws;
-    MQ.addUserToHub(params.get('playerID'))
+    //MQ.addUserToHub(params.get('playerID'))
 
     ws.on('message', (data) => {
         let JSONmessage = JSON.parse(data);
-        if (JSONmessage.to_user in connections) {
+        if (JSONmessage.from_user in connections) {
             console.log("Receiver present, forwarding message to receiver");
-            connections[JSONmessage.to_user].send(data);
+            connections[JSONmessage.from_user].send(data);
         } else {
             console.log("Receiver not present, forwarding message to database");
-            MQ.storeMessage(JSONmessage)
+            //MQ.storeMessage(JSONmessage)
         }
     })
 
     ws.on('close', () => {
-        MQ.removeUserFromHub(params.get('playerID'))
+        //MQ.removeUserFromHub(params.get('playerID'))
         delete connections[params.get('playerID')];
         console.log('Connection closed');
     })
